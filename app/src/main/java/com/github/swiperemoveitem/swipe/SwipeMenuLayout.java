@@ -170,7 +170,6 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean isIntercepted = super.onInterceptTouchEvent(ev);
         int action = ev.getAction();
-        Log.d("andy", "SwipeMenuIntercept:" + action + "是否拦截:" + isIntercepted);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mDownX = mLastX = (int) ev.getX();
@@ -180,7 +179,6 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
             case MotionEvent.ACTION_MOVE:
                 int disX = (int) (ev.getX() - mDownX);
                 int disY = (int) (ev.getY() - mDownY);
-                //在范围内
                 isIntercepted = Math.abs(disX) > mScaledTouchSlop && Math.abs(disX) > Math.abs(disY);
                 break;
             case MotionEvent.ACTION_UP:
@@ -208,7 +206,6 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
         int dx;
         int dy;
         int action = ev.getAction();
-        Log.d("andy", "SwipeMenuTouch:" + action);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 mLastX = (int) ev.getX();
@@ -220,7 +217,6 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
                 }
                 int disX = (int) (mLastX - ev.getX());
                 int disY = (int) (mLastY - ev.getY());
-                Log.d("andy", "SwipeMenuTouch:" + disX);
                 if (!mDragging && Math.abs(disX) > mScaledTouchSlop && Math.abs(disX) > Math.abs(disY)) {
                     mDragging = true;
                 }
@@ -238,7 +234,7 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
                                 mSwipeCurrentHorizontal = mSwipeLeftHorizontal;
                         }
                     }
-                    // 滑动时超出了范围则滑动删除
+                    // TODO 滑动时超出了范围则滑动删除
                     if (mSwipeCurrentHorizontal != null && getScrollX() >= mSwipeCurrentHorizontal.getMenuView().getWidth()) {
 
                         //smoothToDeleteMenu(duration);
@@ -313,7 +309,6 @@ public class SwipeMenuLayout extends FrameLayout implements SwipeSwitch {
     private void smoothToDeleteMenu(int duration) {
         if (mSwipeCurrentHorizontal != null) {
             Log.d("andy", "满足滑动删除条件:menu宽度" + mSwipeCurrentHorizontal.getMenuWidth());
-            //改变删除滑块宽度为屏幕宽度
             mSwipeCurrentHorizontal.autoDeleteMenu(mScroller, getScrollX(), duration);
             isDelete = true;
             new Handler().postDelayed(new Runnable() {
