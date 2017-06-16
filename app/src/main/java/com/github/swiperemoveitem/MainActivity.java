@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.github.swiperemoveitem.swipe.Closeable;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private int size = 50;
     private List<String> mStrings = new ArrayList<>();
     private MenuAdapter mMenuAdapter;
+    private CheckBox mSelectAllCb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
         mMenuAdapter = new MenuAdapter(mStrings);
         mMenuAdapter.setOnItemClickListener(onItemClickListener);
         mSwipeMenuRecyclerView.setAdapter(mMenuAdapter);
+
+        mSelectAllCb = (CheckBox) findViewById(R.id.select_all);
+        mSelectAllCb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("andy", "点击全选：" + mSelectAllCb.isChecked());
+                mMenuAdapter.setSelectAll(mSelectAllCb.isChecked());
+            }
+        });
     }
 
     /**

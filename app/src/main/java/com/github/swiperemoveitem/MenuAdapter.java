@@ -20,11 +20,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.github.swiperemoveitem.swipe.SwipeMenuAdapter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by YOLANDA on 2016/7/22.
@@ -34,6 +37,8 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
     private List<String> titles;
 
     private OnItemClickListener mOnItemClickListener;
+
+    private Map<Integer, Boolean> mSelectMap = new HashMap<>();
 
     public MenuAdapter(List<String> titles) {
         this.titles = titles;
@@ -62,6 +67,10 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
     public void onBindViewHolder(MenuAdapter.DefaultViewHolder holder, int position) {
         holder.setData(titles.get(position));
         holder.setOnItemClickListener(mOnItemClickListener);
+        if (mSelectMap.get(position) != null) {
+            Log.d("andy", "第几条是否可选：" + position + mSelectMap.get(position));
+            holder.mItemCb.setChecked(mSelectMap.get(position));
+        }
     }
 
     @Override
@@ -76,14 +85,27 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
         //notifyItemRangeChanged(0, getItemCount());
     }
 
+    public void setSelectAll(boolean selected) {
+        for (int i = 0; i < titles.size(); i++) {
+            mSelectMap.put(i, selected);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void getSelect() {
+
+    }
+
     static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitle;
         OnItemClickListener mOnItemClickListener;
+        CheckBox mItemCb;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
+            mItemCb = (CheckBox) itemView.findViewById(R.id.item_cb);
         }
 
         public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
